@@ -13,8 +13,19 @@ $(document).ready(function() {
 
 	var database = firebase.database();
 
+	function monthDiff(d1, d2) {
+	    var months;
+	    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+	    months -= d1.getMonth() + 1;
+	    months += d2.getMonth();
+	    return months <= 0 ? 0 : months;
+	}
+
+	// database.ref("/EmployeeDataManagement").on("child_added", function(childsnapshot) {});
 	database.ref("/EmployeeDataManagement").on("value", function(snap) {
 		$("#display-article").empty();
+
+		var today = new Date();
 
 		snap.forEach(function(childsnap) {
 			var childValue = childsnap.val();
@@ -23,9 +34,15 @@ $(document).ready(function() {
 			tr.append("<td>" + childValue.employeeName + "</td>");
 			tr.append("<td>" + childValue.role + "</td>");
 			tr.append("<td>" + childValue.startDate + "</td>");
-			tr.append("<td>" + "" + "</td>");
+
+			var childdate = new Date(childValue.startDate);
+			var monthWorked = monthDiff(childdate, today);
+			tr.append("<td>" + monthWorked + "</td>");
+
 			tr.append("<td>" + "$" + childValue.monthlyRate + "</td>");
-			tr.append("<td>" + "" + "</td>");
+
+			var total = childValue.monthlyRate * monthWorked;
+			tr.append("<td>" + total + "</td>");
 			
 			$("#display-article").append(tr);
 		});
