@@ -42,7 +42,7 @@ $(document).ready(function() {
 			tr.append("<td>" + "$" + childValue.monthlyRate + "</td>");
 
 			var total = childValue.monthlyRate * monthWorked;
-			tr.append("<td>" + total + "</td>");
+			tr.append("<td>" + "$" + total + "</td>");
 			
 			$("#display-article").append(tr);
 		});
